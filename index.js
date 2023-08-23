@@ -13,7 +13,8 @@ console.log('Whitney-Rene');
 //"req" ask the server for things, if someone visits the "/", do something
 //"res" if this happens, do this
 app.get('/', (req, res) => {
-    res.send('Hello World!')
+    console.log("Someone is visiting my page :)")
+    res.send('Hola mundo! You are visiting my server!')
 })
 
 //get is a function that takes 2 parameters
