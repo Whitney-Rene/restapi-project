@@ -1,11 +1,17 @@
 //app framework (can come in the form of a package, but not all packages are frameworks) for backend
 const express = require('express')
-const cors = require('cors');
-const path = require('path');
-const app = express()
+//import these before the creation of the "app"
+const cors = require('cors'); //makes sure nothing else in comp is using this port #
+const path = require('path'); //will tell express we are working directory and the dir of the books.js, express on its own does not know
+const BOOKS = require('./books.js');
 
-//arbitrary number for port, can be any number
-const port = 2023
+const app = express()
+const port = 2023 //arbitrary number for port, can be any number
+
+
+app.use(cors()); //Middleware
+
+const __dirname = path.resolve(); //similiar to pwd
 
 console.log('Whitney-Rene');
 
