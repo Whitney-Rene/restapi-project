@@ -16,7 +16,17 @@ app.get('/', (req, res) => {
     res.send('Hello World!')
 })
 
-
+//get is a function that takes 2 parameters
+//first is the route
+//second anonymous function
+app.get('/user', (req, res) => {
+//request - anything that we are asking the server, the server answers my request
+//response - what we want the have once the server responds, I handle the response, server is not more intelligent than me
+// res.send("Hello user, nice to see you")
+    if(res.statusCode === 200) {
+        res.send("Hello user, nice to see you!")
+    }
+})
 
 //this should be the last function of your server, it tells computer which port to use
 app.listen(port, () => {
