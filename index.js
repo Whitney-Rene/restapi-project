@@ -1,5 +1,7 @@
 //app framework (can come in the form of a package, but not all packages are frameworks) for backend
 const express = require('express')
+const cors = require('cors');
+const path = require('path');
 const app = express()
 
 //arbitrary number for port, can be any number

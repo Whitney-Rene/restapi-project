@@ -21,4 +21,6 @@ const BOOKS = [{
     "title": "Marriage Be Hard",
     "author": "Kevin & Melissa Fredricks",
     "format": "hardcover"
-}]
+}];
+
+export default BOOKS;
