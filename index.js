@@ -28,6 +28,14 @@ app.get('/user', (req, res) => {
     }
 })
 
+//let's put a rule for when I don't know what is happening, don't understand the request
+//has to be the LAST router, and BEFORE the listen
+//we are not using get/put/post/delete b/c we are not doing something in favor of the user, just telling user I don't know what you are doing
+//"use" is a function that takes a response
+app.use((req, res) => {
+    res.status(404).send("Sorry, I can't find that!")
+})
+
 //this should be the last function of your server, it tells computer which port to use
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
