@@ -1,9 +1,9 @@
 //app framework (can come in the form of a package, but not all packages are frameworks) for backend
-const express = require('express')
+import express from 'express';
 //import these before the creation of the "app"
-const cors = require('cors'); //makes sure nothing else in comp is using this port #
-const path = require('path'); //will tell express we are working directory and the dir of the books.js, express on its own does not know
-const BOOKS = require('./books.js');
+import cors from 'cors'; //makes sure nothing else in comp is using this port #
+import path from 'path'; //will tell express we are working directory and the dir of the books.js, express on its own does not know
+import BOOKS from './books.js';
 
 const app = express()
 const port = 2023 //arbitrary number for port, can be any number
@@ -28,6 +28,11 @@ app.get('/', (req, res) => {
 //get is a function that takes 2 parameters
 //first is the route
 //second anonymous function
+//http://localhost:2023/books - I can put in postman, it is an api
+app.get('/books', (req, res) => {
+    res.json(BOOKS);
+})
+
 app.get('/user', (req, res) => {
 //request - anything that we are asking the server, the server answers my request
 //response - what we want the have once the server responds, I handle the response, server is not more intelligent than me
