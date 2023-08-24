@@ -4,12 +4,15 @@ import express from 'express';
 import cors from 'cors'; //makes sure nothing else in comp is using this port #
 import path from 'path'; //will tell express the pwd
 import BOOKS from './books.js'; //THIS ALLOWS BOOKS TO BE ACCESSED BY INDEX.JS?
+import bodyParser from 'body-parser';
 
 const app = express()
 const port = 2023 //arbitrary number for port
 
 
 app.use(cors()); //Middleware
+app.use(bodyParser.urlencoded({extended:false}));
+app.use(bodyParser.json());
 
 const __dirname = path.resolve(); //similiar to pwd
 
@@ -43,6 +46,7 @@ app.get('/books', (req, res) => {
 //get/list book in a particular position in the array
 //avoid indexes in the front and end
 //you will not likely use indexes, unless you are 100% sure the db will not change
+//http://localhost:2023/books/atInd
 app.get('/books/atInd', /* DO I NEED A SLASH? = /booksatInd */(req, res) => {
     res.send(BOOKS[0]);
     //res.send([BOOKS[1], BOOKS[2]]);
@@ -66,6 +70,31 @@ app.get('/books/:id', (req, res) => {
     // res.json({"book1": BOOKS[id],
     // "book2": BOOKS[id]})
 })
+
+//DID I MEET THE GUIDELINES?
+//WHY IS THE POST NOT WORKING?
+app.post('/books/newBook', (req, res) => {
+    console.log("Got a POST request for the homepage");
+    let data = req.body;
+
+    // console.log(req.body);
+    // res.send("Test Correct" + JSON.stringify(data));
+    const newBook = {
+        id: 5,
+        title: "Becomming",
+        author: "Michelle Obama",
+        format: "paperback"
+    };
+    BOOKS.push(newBook);
+    res.send(BOOKS);
+ })
+
+ //http://localhost:2023/books/delete
+ app.delete("/books/delete", (req, res) => {
+    console.log("This is a delete request");
+    BOOKS.pop();
+    res.send(BOOKS)
+ })
 
 //a rule for when the request is not understood
 //"use" is a function that takes a response
