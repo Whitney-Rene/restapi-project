@@ -39,12 +39,21 @@ app.get('/books/secbook' /* DO I NEED A SLASH? /bookssecbook */, (req, res) => {
     // res.json(BOOKS[]) CAN I ONLY HAVE 1 RES?
 })
 
-//pick up at minute 51
-//https://www.dropbox.com/scl/fi/d66uv3noii87bk937p8pp/video1922996227.mp4?dl=0&rlkey=u0l3ogv2res5vlig4ntz1hbca
-app.get('/books/:id' /* wild card for id, this is the route of the url, shows thing after colon */, (req, res) => {
-    const { id } = req.params;  //ID COMES FROM THE URL?
-    console.log(req.params)
-    console.log(id);
+//what if we want to go to a book with a specific id
+//req params = what appears after /books/:id, req params grabs that
+//an object that has whatever is in url that matches wild card
+app.get('/books/:id' /* wild card for id, this is the route of the url-not books.js, shows thing after colon, :id-making this parameter*/, (req, res) => {
+    const { id } = req.params;  //ID COMES FROM THE URL? at this moment it does not know about ids in books.js
+    // console.log(req.params)
+    // console.log(id);
+    //find()-JS array method
+    const book = BOOKS.find(book => book.id === id);
+    // console.log(book);
+    if(!book){
+        res.status(404).send("I don't have that book!")
+    }  else {
+        res.json(book);
+    }
 })
 
 //a rule for when the request is not understood
