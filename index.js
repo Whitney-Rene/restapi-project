@@ -57,6 +57,7 @@ app.get('/books/atInd', /* DO I NEED A SLASH? = /booksatInd */(req, res) => {
 //req params = what appears after /books/:id, req params grabs that
 //an object that has whatever is in url that matches wild card
 // :id = wild card for id, this is the route of the url-not books.js, shows thing after colon, :id-making this parameter*/
+// http://localhost:2023/books/1 
 app.get('/books/:id', (req, res) => {
     const { id } = req.params; //ID COMES FROM THE URL? at this moment it does not know about ids in books.js
     //find()-JS array method
@@ -71,8 +72,8 @@ app.get('/books/:id', (req, res) => {
     // "book2": BOOKS[id]})
 })
 
-//DID I MEET THE GUIDELINES?
-//WHY IS THE POST NOT WORKING?
+//post request for new book
+// http://localhost:2023/books/newBook *POST request in Postman
 app.post('/books/newBook', (req, res) => {
     console.log("Got a POST request for the homepage");
     let data = req.body;
@@ -89,12 +90,29 @@ app.post('/books/newBook', (req, res) => {
     res.send(BOOKS);
  })
 
- //http://localhost:2023/books/delete
+ //put request
+
+ //delete request for last book 
+ //http://localhost:2023/books/delete *DELETE request in Postman
  app.delete("/books/delete", (req, res) => {
     console.log("This is a delete request");
     BOOKS.pop();
     res.send(BOOKS)
  })
+
+ //delete request for a specific book
+ http://localhost:2023/books-delete/1
+ app.delete("/books-delete/:id", (req, res) => {
+    const { id } = req.params; //ID COMES FROM THE URL? at this moment it does not know about ids in books.js
+    //find()-JS array method
+    const book = BOOKS.find(book => book.id === id);
+    if(!book){
+        res.status(404).send("I don't have that book!")
+    }  else {
+        BOOKS.splice(id, 1);
+        res.send(BOOKS);
+        }
+ }) 
 
 //a rule for when the request is not understood
 //"use" is a function that takes a response
