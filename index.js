@@ -33,6 +33,12 @@ app.get('/books', (req, res) => {
     res.json(BOOKS);
 })
 
+//get the book in position 2 of the array
+app.get('/books/id1', (req, res) => {
+    res.json(BOOKS[1]);
+    // res.json(BOOKS[]) CAN I ONLY HAVE 1 RES?
+})
+
 app.get('/user', (req, res) => {
 //request - anything that we are asking the server, the server answers my request
 //response - what we want the have once the server responds, I handle the response, server is not more intelligent than me
@@ -41,6 +47,7 @@ app.get('/user', (req, res) => {
         res.send("Hello user, nice to see you!")
     }
 })
+
 
 //let's put a rule for when I don't know what is happening, don't understand the request
 //has to be the LAST router, and BEFORE the listen
