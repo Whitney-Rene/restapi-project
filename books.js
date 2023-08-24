@@ -14,7 +14,7 @@ const BOOKS = [{
     "id": "3",
     "title": "The Light We Carry",
     "author": "Michelle Obama",
-    "format": "hardcover"
+    "format": "paperback"
 },
 {
     "id": "4",

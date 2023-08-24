@@ -17,12 +17,13 @@ console.log('Whitney-Rene');
 
 //home route, user will see message
 app.get('/', (req, res) => {
-    console.log("Someone is visiting my page :)")
-    res.send('Welcome! You are visiting my server/website!')
+    console.log("Someone is visiting my HOME page")
+    res.send('Welcome! You are visiting my server!')
 })
 
 //if user goes here and the status code is 200, show this message, still a get request
 app.get('/user', (req, res) => {
+    console.log("Someone is visiting my USER page.")
     if(res.statusCode === 200) {
         res.send("Hello user, nice to see you!")
     }
@@ -30,31 +31,41 @@ app.get('/user', (req, res) => {
 
 //user will see list of books
 app.get('/books', (req, res) => {
+    console.log("Someone is visiting my BOOKS page.")
+    // console.log(req);
+    //filter books array according to this para, if format is empty, show all books
     res.json(BOOKS);
 })
 
+
+
 //get/list the book in position 2 of the array
-app.get('/books/secbook' /* DO I NEED A SLASH? /bookssecbook */, (req, res) => {
-    res.json(BOOKS[1]);
-    // res.json(BOOKS[]) CAN I ONLY HAVE 1 RES?
+//avoid indexes in the front end too
+app.get('/books/:id' /* DO I NEED A SLASH? /bookssecbook */, (req, res) => {
+    // res.json([BOOKS[1], BOOKS[3]]) *you will not likely use indexes, unless you are 100% sure the db will not change
+    const { id } = req.params;
+    res.json({"book1": BOOKS[id],
+    "book2": BOOKS[id]})
 })
 
 //what if we want to go to a book with a specific id
 //req params = what appears after /books/:id, req params grabs that
 //an object that has whatever is in url that matches wild card
-app.get('/books/:id' /* wild card for id, this is the route of the url-not books.js, shows thing after colon, :id-making this parameter*/, (req, res) => {
-    const { id } = req.params;  //ID COMES FROM THE URL? at this moment it does not know about ids in books.js
-    // console.log(req.params)
-    // console.log(id);
-    //find()-JS array method
-    const book = BOOKS.find(book => book.id === id);
-    // console.log(book);
-    if(!book){
-        res.status(404).send("I don't have that book!")
-    }  else {
-        res.json(book);
-    }
-})
+// app.get('/books/:id' /* wild card for id, this is the route of the url-not books.js, shows thing after colon, :id-making this parameter*/, (req, res) => {
+//     const { id } = req.params;  //ID COMES FROM THE URL? at this moment it does not know about ids in books.js
+//     // console.log(req.params)
+//     // console.log(id);
+//     //find()-JS array method
+//     const book = BOOKS.find(book => book.id === id);
+//     // console.log(book);
+//     if(!book){
+//         res.status(404).send("I don't have that book!")
+//     }  else {
+//         res.json(book);
+//     }
+// })
+
+
 
 //a rule for when the request is not understood
 //"use" is a function that takes a response
