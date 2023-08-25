@@ -22,7 +22,7 @@ console.log('Whitney-Rene');
 //http://localhost:2023/
 app.get('/', (req, res) => {
     console.log("Someone is visiting my HOME page")
-    res.send('Welcome! You are visiting my home server!')
+    res.send('Welcome! You are visiting my HOME server!')
 })
 
 //if user goes here and the status code is 200, show this message, still a get request
@@ -30,7 +30,7 @@ app.get('/', (req, res) => {
 app.get('/user', (req, res) => {
     console.log("Someone is visiting my USER page.")
     if(res.statusCode === 200) {
-        res.send("Hello user, nice to see you!")
+        res.send("Hello USER, nice to see you!")
     }
 })
 
@@ -38,48 +38,44 @@ app.get('/user', (req, res) => {
 // http://localhost:2023/books
 app.get('/books', (req, res) => {
     console.log("Someone is visiting my BOOKS page.")
-    // console.log(req);
-    //filter books array according to this para, if format is empty, show all books
     res.json(BOOKS);
 })
 
-//get/list book in a particular position in the array
-//avoid indexes in the front and end
-//you will not likely use indexes, unless you are 100% sure the db will not change
+//list book in a particular position in the array
 //http://localhost:2023/books/atInd
-app.get('/books/atInd', /* DO I NEED A SLASH? = /booksatInd */(req, res) => {
+app.get('/books/atInd', (req, res) => {
+    console.log("Someone is visiting my BOOKS.INDEX page.")
     res.send(BOOKS[0]);
     //res.send([BOOKS[1], BOOKS[2]]);
-    //res.json(BOOKS[0]); DOES THE SAME THING NO?
+    //res.json({"book1": BOOKS[1], "book2": BOOKS[3]})
+    //res.json(BOOKS[0]); 
 })
+//avoid indexes in the frontend and backend
+//you will not likely use indexes, unless you are 100% sure the db will not change
 
-//what if we want to go to a book with a specific id
-//req params = what appears after /books/:id, req params grabs that
-//an object that has whatever is in url that matches wild card
-// :id = wild card for id, this is the route of the url-not books.js, shows thing after colon, :id-making this parameter*/
+
+//list a book with a specific id
 // http://localhost:2023/books/1 
 app.get('/books/:id', (req, res) => {
-    const { id } = req.params; //ID COMES FROM THE URL? at this moment it does not know about ids in books.js
+    console.log("Someone is visiting my ID.BOOKS page.")
+    const { id } = req.params; 
     //find()-JS array method
     const book = BOOKS.find(book => book.id === id);
-    // console.log(book);
+    console.log(book);
     if(!book){
         res.status(404).send("I don't have that book!")
     }  else {
         res.json(book);
         }
-    // res.json({"book1": BOOKS[id],
-    // "book2": BOOKS[id]})
 })
 
-//post request for new book
-// http://localhost:2023/books/newBook *POST request in Postman
-app.post('/books/newBook', (req, res) => {
-    console.log("Got a POST request for the homepage");
+//post request to add a new book
+//Change to "POST" in postman
+// http://localhost:2023/books/createBook *Needed to grab the body
+app.post('/books/createBook', (req, res) => {
+    console.log("Got a POST request");
+    //*Needed to grab the body
     let data = req.body;
-
-    // console.log(req.body);
-    // res.send("Test Correct" + JSON.stringify(data));
     const newBook = {
         id: 5,
         title: "Becomming",
@@ -91,19 +87,25 @@ app.post('/books/newBook', (req, res) => {
  })
 
  //put request
+app.put('books/editBook')
 
- //delete request for last book 
- //http://localhost:2023/books/delete *DELETE request in Postman
- app.delete("/books/delete", (req, res) => {
-    console.log("This is a delete request");
+
+ //delete request for LAST book 
+ //Change to "DELETE" in postman *What if I click send 4 times?
+ //http://localhost:2023/books/deleteBook 
+ app.delete("/books/deleteBook", (req, res) => {
+    console.log("This is a DELETE request");
     BOOKS.pop();
     res.send(BOOKS)
  })
 
- //delete request for a specific book
- http://localhost:2023/books-delete/1
- app.delete("/books-delete/:id", (req, res) => {
-    const { id } = req.params; //ID COMES FROM THE URL? at this moment it does not know about ids in books.js
+
+ //???
+ //delete request for specific book
+ //http://localhost:2023/books/deleteIdBook/1 
+ app.delete("/books/deleteIdBook/:id", (req, res) => {
+    console.log("Got a DELETEID request");
+    const { id } = req.params; 
     //find()-JS array method
     const book = BOOKS.find(book => book.id === id);
     if(!book){
@@ -115,7 +117,7 @@ app.post('/books/newBook', (req, res) => {
  }) 
 
 //a rule for when the request is not understood
-//"use" is a function that takes a response
+ //http://localhost:2023/books/whitney-rene 
 app.use((req, res) => {
     res.status(404).send("Sorry, I can't find that!")
 })
@@ -124,3 +126,8 @@ app.use((req, res) => {
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
 })
+
+//Challenge:
+//filter books array according to this para, if format is empty, show all books
+//  // res.json({"book1": BOOKS[id],
+    // "book2": BOOKS[id]})

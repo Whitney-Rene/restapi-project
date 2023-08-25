@@ -49,6 +49,25 @@ app.get('/user', (req, res) => {
 })
 
 
+
+
+//req params = what appears after /books/:id, req params grabs that
+//an object that has whatever is in url that matches wild card
+// :id = wild card for id, this is the route of the url-not books.js, shows thing after colon, :id-making this parameter*/
+app.get('/books/:id', (req, res) => {
+    const { id } = req.params; //ID COMES FROM THE URL? at this moment it does not know about ids in books.js
+    //find()-JS array method
+    const book = BOOKS.find(book => book.id === id);
+    // console.log(book);
+    if(!book){
+        res.status(404).send("I don't have that book!")
+    }  else {
+        res.json(book);
+        }
+    // res.json({"book1": BOOKS[id],
+    // "book2": BOOKS[id]})
+})
+
 //let's put a rule for when I don't know what is happening, don't understand the request
 //has to be the LAST router, and BEFORE the listen
 //we are not using get/put/post/delete b/c we are not doing something in favor of the user, just telling user I don't know what you are doing
