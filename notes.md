@@ -20,6 +20,7 @@ console.log('Whitney-Rene');
 //"get" is just showing information
 //"req" ask the server for things, if someone visits the "/", do something
 //"res" if this happens, do this
+//, stil a get request
 app.get('/', (req, res) => {
     console.log("Someone is visiting my page :)")
     res.send('Hola mundo! You are visiting my server!')

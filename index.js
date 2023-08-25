@@ -7,14 +7,14 @@ import BOOKS from './books.js'; //THIS ALLOWS BOOKS TO BE ACCESSED BY INDEX.JS?
 import bodyParser from 'body-parser';
 
 const app = express()
-const port = 2023 //arbitrary number for port
+const port = 2023
 
 
 app.use(cors()); //Middleware
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 
-const __dirname = path.resolve(); //similiar to pwd
+const __dirname = path.resolve();
 
 console.log('Whitney-Rene');
 
@@ -25,7 +25,7 @@ app.get('/', (req, res) => {
     res.send('Welcome! You are visiting my HOME server!')
 })
 
-//if user goes here and the status code is 200, show this message, still a get request
+//if user goes here and the status code is 200, show this message
 // http://localhost:2023/user
 app.get('/user', (req, res) => {
     console.log("Someone is visiting my USER page.")
@@ -35,7 +35,7 @@ app.get('/user', (req, res) => {
 })
 
 //user will see list of books
-// http://localhost:2023/books
+//http://localhost:2023/books
 app.get('/books', (req, res) => {
     console.log("Someone is visiting my BOOKS page.")
     res.json(BOOKS);
@@ -71,7 +71,7 @@ app.get('/books/:id', (req, res) => {
 
 //post request to add a new book
 //Change to "POST" in postman
-// http://localhost:2023/books/createBook *Needed to grab the body
+//http://localhost:2023/books/createBook
 app.post('/books/createBook', (req, res) => {
     console.log("Got a POST request");
     //*Needed to grab the body
@@ -86,9 +86,17 @@ app.post('/books/createBook', (req, res) => {
     res.send(BOOKS);
  })
 
- //put request
-app.put('books/editBook')
+//change author of 3rd book
+////Change to "PUT" in postman
+//http://localhost:2023/books/editBook
+app.put('/books/editBook', (req, res) => {
+    console.log("Got a PUT request");
+    let data = req.body;
+    BOOKS[2].author="Whitney-Rene";
+    res.send(BOOKS)
+})
 
+//quit server?
 
  //delete request for LAST book 
  //Change to "DELETE" in postman *What if I click send 4 times?
@@ -100,11 +108,11 @@ app.put('books/editBook')
  })
 
 
- //???
- //delete request for specific book
- //http://localhost:2023/books/deleteIdBook/1 
- app.delete("/books/deleteIdBook/:id", (req, res) => {
-    console.log("Got a DELETEID request");
+ //tnis one is wonky???
+ //delete request for book at SPECIFIC INDEX
+ //http://localhost:2023/books/deleteIndBook/1 
+ app.delete("/books/deleteIndBook/:id", (req, res) => {
+    console.log("Got a DELETEInd request");
     const { id } = req.params; 
     //find()-JS array method
     const book = BOOKS.find(book => book.id === id);
@@ -116,8 +124,9 @@ app.put('books/editBook')
         }
  }) 
 
+
 //a rule for when the request is not understood
- //http://localhost:2023/books/whitney-rene 
+//http://localhost:2023/whitney-rene 
 app.use((req, res) => {
     res.status(404).send("Sorry, I can't find that!")
 })
