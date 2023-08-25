@@ -117,8 +117,6 @@ app.put('/books/editBook', (req, res) => {
     res.send(BOOKS)
  })
 
-//quit server?, close postman tab BECAUSE
-    //tnis one is wonky???
 //delete request for book with SPECIFIC ID
 // http://localhost:2023/books/deleteIndBook/1 *I should see the book w/ id:1 eliminated
  app.delete("/books/deleteIndBook/:id", (req, res) => {
