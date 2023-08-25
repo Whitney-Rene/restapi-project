@@ -6,7 +6,7 @@ import path from 'path'; //will tell express the pwd
 import BOOKS from './books.js'; //THIS ALLOWS BOOKS TO BE ACCESSED BY INDEX.JS?
 import bodyParser from 'body-parser'; //allow put & post requests
 
-const app = express()
+const app = express() //holds a new express app, each time it is called
 const port = 2023
 
 
@@ -119,19 +119,16 @@ app.put('/books/editBook', (req, res) => {
 
 //quit server?, close postman tab BECAUSE
     //tnis one is wonky???
-//delete request for book at SPECIFIC INDEX
-// http://localhost:2023/books/deleteIndBook/1 **I should expect to see the 2nd book drop off
+//delete request for book with SPECIFIC ID
+// http://localhost:2023/books/deleteIndBook/1 *I should see the book w/ id:1 eliminated
  app.delete("/books/deleteIndBook/:id", (req, res) => {
     console.log("Got a DELETEInd request");
     const { id } = req.params; 
-    //find()-JS array method
-    const book = BOOKS.find(book => book.id === id);
-    const indexOfObj = BOOKS.findIndex(object => {return book.id === id});
+    const book = BOOKS.filter(book => book.id !== id);
     if(!book){
         res.status(404).send("I don't have that book!")
     }
-        BOOKS.splice(indexOfObj, 1);
-        res.send(BOOKS);
+        res.send(book);
         
  }) 
 

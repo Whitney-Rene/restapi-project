@@ -69,6 +69,21 @@ app.get('/books/:id', (req, res) => {
     // "book2": BOOKS[id]})
 })
 
+ app.delete("/books/deleteIndBook/:id", (req, res) => {
+    console.log("Got a DELETEInd request");
+    const { id } = req.params; 
+    //find()-JS array method
+    // const book = BOOKS.find(book => book.id === id); 
+    const book = BOOKS.filter(book => book.id !== id)  //filter does not modify the org array
+    // const indexOfObj = BOOKS.findIndex(object => {return book.id === id});
+    if(!book){
+        res.status(404).send("I don't have that book!")
+    }
+        // BOOKS.splice(indexOfObj, 1);
+        res.send(book);
+        
+ }) 
+
 //let's put a rule for when I don't know what is happening, don't understand the request
 //has to be the LAST router, and BEFORE the listen
 //we are not using get/put/post/delete b/c we are not doing something in favor of the user, just telling user I don't know what you are doing
