@@ -4,7 +4,7 @@ import express from 'express';
 import cors from 'cors'; //makes sure nothing else in comp is using this port #
 import path from 'path'; //will tell express the pwd
 import BOOKS from './books.js'; //THIS ALLOWS BOOKS TO BE ACCESSED BY INDEX.JS?
-import bodyParser from 'body-parser';
+import bodyParser from 'body-parser'; //allow put & post requests
 
 const app = express()
 const port = 2023
@@ -19,7 +19,7 @@ const __dirname = path.resolve();
 console.log('Whitney-Rene');
 
 //home route, user will see message
-//http://localhost:2023/
+// http://localhost:2023/
 app.get('/', (req, res) => {
     console.log("Someone is visiting my HOME page")
     res.send('Welcome! You are visiting my HOME server!')
@@ -35,14 +35,14 @@ app.get('/user', (req, res) => {
 })
 
 //user will see list of books
-//http://localhost:2023/books
+// http://localhost:2023/books
 app.get('/books', (req, res) => {
     console.log("Someone is visiting my BOOKS page.")
     res.json(BOOKS);
 })
 
 //list book in a particular position in the array
-//http://localhost:2023/books/atInd
+// http://localhost:2023/books/atInd
 app.get('/books/atInd', (req, res) => {
     console.log("Someone is visiting my BOOKS.INDEX page.")
     res.send(BOOKS[0]);
@@ -55,7 +55,7 @@ app.get('/books/atInd', (req, res) => {
 
 
 //list a book with a specific id
-// http://localhost:2023/books/1 
+// http://localhost:2023/books/4 
 app.get('/books/:id', (req, res) => {
     console.log("Someone is visiting my ID.BOOKS page.")
     const { id } = req.params; 
@@ -71,11 +71,9 @@ app.get('/books/:id', (req, res) => {
 
 //post request to add a new book
 //Change to "POST" in postman
-//http://localhost:2023/books/createBook
+// http://localhost:2023/books/createBook
 app.post('/books/createBook', (req, res) => {
     console.log("Got a POST request");
-    //*Needed to grab the body
-    let data = req.body;
     const newBook = {
         id: 5,
         title: "Becomming",
@@ -84,49 +82,61 @@ app.post('/books/createBook', (req, res) => {
     };
     BOOKS.push(newBook);
     res.send(BOOKS);
- })
+})
 
 //change author of 3rd book
 ////Change to "PUT" in postman
 //http://localhost:2023/books/editBook
+// app.put('/books/editBook', (req, res) => {
+//     console.log("Got a PUT request");
+//     BOOKS[2].author="Whitney-Rene";
+//     res.send(BOOKS)
+// })
+
+//change author of 3rd book
+////Change to "PUT" in postman
+// http://localhost:2023/books/editBook
 app.put('/books/editBook', (req, res) => {
     console.log("Got a PUT request");
     let data = req.body;
-    BOOKS[2].author="Whitney-Rene";
+    //should see {} in terminal
+    console.log(req.body);
+    data.name = "Whitney-Rene"
+    //should see {name: "Whitney-Rene"}
+    console.log(req.body);
+    BOOKS[2].author=data.name;
     res.send(BOOKS)
 })
 
-//quit server?
-
  //delete request for LAST book 
  //Change to "DELETE" in postman *What if I click send 4 times?
- //http://localhost:2023/books/deleteBook 
+ // http://localhost:2023/books/deleteBook 
  app.delete("/books/deleteBook", (req, res) => {
     console.log("This is a DELETE request");
     BOOKS.pop();
     res.send(BOOKS)
  })
 
-
- //tnis one is wonky???
- //delete request for book at SPECIFIC INDEX
- //http://localhost:2023/books/deleteIndBook/1 
+//quit server?, close postman tab BECAUSE
+    //tnis one is wonky???
+//delete request for book at SPECIFIC INDEX
+// http://localhost:2023/books/deleteIndBook/1 **I should expect to see the 2nd book drop off
  app.delete("/books/deleteIndBook/:id", (req, res) => {
     console.log("Got a DELETEInd request");
     const { id } = req.params; 
     //find()-JS array method
     const book = BOOKS.find(book => book.id === id);
+    const indexOfObj = BOOKS.findIndex(object => {return book.id === id});
     if(!book){
         res.status(404).send("I don't have that book!")
-    }  else {
-        BOOKS.splice(id, 1);
+    }
+        BOOKS.splice(indexOfObj, 1);
         res.send(BOOKS);
-        }
+        
  }) 
 
-
 //a rule for when the request is not understood
-//http://localhost:2023/whitney-rene 
+// http://localhost:2023/whitney-rene 
 app.use((req, res) => {
     res.status(404).send("Sorry, I can't find that!")
 })
@@ -136,7 +146,9 @@ app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
 })
 
-//Challenge:
+
+
+//CHALLENGES for the future:
 //filter books array according to this para, if format is empty, show all books
 //  // res.json({"book1": BOOKS[id],
     // "book2": BOOKS[id]})
