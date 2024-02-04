@@ -5,6 +5,7 @@ import cors from 'cors'; //makes sure nothing else in comp is using this port #
 import path from 'path'; //will tell express the pwd
 import BOOKS from './books.js'; //THIS ALLOWS BOOKS TO BE ACCESSED BY INDEX.JS?
 import bodyParser from 'body-parser'; //allow put & post requests
+import fetch from 'node-fetch';
 
 const app = express() //holds a new express app, each time it is called
 const port = 2023
@@ -56,18 +57,53 @@ app.get('/books/atInd', (req, res) => {
 
 //list a book with a specific id
 // http://localhost:2023/books/4 
-app.get('/books/:id', (req, res) => {
+//https://api.openweathermap.org/data/2.5/weather?q=fremont
+app.get('/books/:id/:title', (req, res) => {
     console.log("Someone is visiting my ID.BOOKS page.")
-    const { id } = req.params; 
+    const { id, title } = req.params; 
+    console.log(req.params)
     //find()-JS array method
-    const book = BOOKS.find(book => book.id === id);
+    const book = BOOKS.find(book => {
+        if(book.id === id && book.title === title){
+            return book}
+        return
     console.log(book);
     if(!book){
         res.status(404).send("I don't have that book!")
-    }  else {
-        res.json(book);
-        }
+        } else {
+            res.json(book);
+            }
+    })
+    });
+
+app.get('/weather/:cityName/:APIkey', (req, res) => {
+    console.log("Someone is visiting my weather site.");
+    const {cityName, APIkey} = req.params;
+    console.log(req.params);
+    //string literal ``
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${APIkey}`
+    fetch(url) 
+        .then(response => {
+            // Code to handle the response
+            // The response might contain data or information about the request status
+            return response.json(); // For example, parsing response as JSON
+        })
+        .then(data => {
+            // Code to handle the parsed data
+            console.log(data);
+            res.send(data);
+        })
+        .catch(error => {
+            // Code to handle errors during the fetch request
+            console.error('Error:', error);
+        });
 })
+
+//Challenges: 
+//?everything after is a query param
+//instead of api on line 79 * 81, tweak 84 =>, get it working with dotenv file
+//req.params vs req.query, look up express documentation for req.query, chatgpt has examples
+
 
 //post request to add a new book
 //Change to "POST" in postman
